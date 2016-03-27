@@ -8,7 +8,10 @@ module API
     # delete 'tags/:type/:identifier', to: 'tags#destroy'
 
     def create
-        @entity = Entity.create(entity_type: tag_params[:entity_type], identifier: tag_params[:entity_identifier])
+        @entity = Entity.find_or_create_by(entity_type: tag_params[:entity_type], identifier: tag_params[:entity_identifier])
+        if @entity.tags.count > 0
+          @entity.destroy_all_tags
+        end
         @entity.create_tags(tag_params[:tags])
         respond_to do |format|
           format.json { render json: { entity_type: @entity.entity_type, entity_identifier: @entity.identifier, tags: @entity.tags }, status: :created }
