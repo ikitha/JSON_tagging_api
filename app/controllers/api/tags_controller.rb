@@ -32,6 +32,9 @@ module API
     end
 
     def stats
+      respond_to do |format|
+        format.json { render json: Tag.all_tag_stats, status: :ok }
+      end
     end
 
     def destroy
