@@ -16,4 +16,11 @@ class Entity < ActiveRecord::Base
     stats = tags.map { |tag| { name: tag , total_occurence: Tag.where(name: tag).count } }
     stats
   end
+
+  def destroy_all_tags
+    self.tags.each do |single_tag|
+      tag = tags.where(name: single_tag.name).first
+      tag.destroy
+    end
+  end
 end

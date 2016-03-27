@@ -38,6 +38,11 @@ module API
     end
 
     def destroy
+      @entity.destroy_all_tags
+      @entity.destroy
+      respond_to do |format|
+        format.json { head :no_content }
+      end
     end
 
   private
