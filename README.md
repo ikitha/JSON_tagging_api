@@ -76,3 +76,12 @@ example curl request:
 
 curl -H "Content-Type: application/json" -H 'Accept: application/json' -X GET http://localhost:3000/api/stats/Company/4123
 ```
+
+###Notes
+For the associations I chose that Entities have many Tags and Tags belong to an Entity. I did not validate uniqueness of tag names for the purpose of them being repeated across different entities and remain independent in that sense. However, tag names may not be repeated under a single entity.
+
+For the create action I contemplated the paths I could take for a bit. "If the entity already exists it should replace it and all tags, not append to it" Upon the post request, I do a find or create by for the Entity. This executes SQL that searches if the record already exists and does a create if it doesn't. I decided to search by both type and identifier for the entity, and if those two matched, there would be no point to delete the record and recreate it, however I do clear the tags regardless. 
+
+The other sticking point I thought more about the planning of was the `GET /stats/:entity_type/:entity_id` and `GET /tags/:entity_type/:entity_id` routes and the difference between them. I eventually settled on the idea that the tags version was clearly to show the entity and the tags. The stats version I added an additional set of data that gets the overall occurence of that entity's tags. 
+
+The final touch I added was that I found there could be an issue with capital letters. Say someone creates an entity_type of "Company" and someone else searches "company" in a GET request; you wouldn't get the result. I went back and downcased everything on both inserts and reads. 
