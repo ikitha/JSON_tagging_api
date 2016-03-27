@@ -20,9 +20,15 @@ module API
     end
 
     def entity
+      respond_to do |format|
+        format.json { render json: { entity_type: @entity.entity_type, entity_identifier: @entity.identifier, tags: @entity.tags }, status: :ok }
+      end
     end
 
     def entity_stats
+      respond_to do |format|
+        format.json { render json: { entity_type: @entity.entity_type, entity_identifier: @entity.identifier, tags: @entity.tags, tag_stats: @entity.single_tag_stats }, status: :ok }
+      end
     end
 
     def stats

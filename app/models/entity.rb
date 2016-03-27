@@ -10,4 +10,10 @@ class Entity < ActiveRecord::Base
       self.tags.create!(name: tag_name) unless self.tags.find_by(name: tag_name)
     end
   end
+
+  def single_tag_stats
+    tags = self.tags.pluck(:name)
+    stats = tags.map { |tag| { name: tag , total_occurence: Tag.where(name: tag).count } }
+    stats
+  end
 end
