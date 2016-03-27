@@ -5,7 +5,7 @@ class Tag < ActiveRecord::Base
 
   def self.all_tag_stats
     unique_tags = Tag.uniq.pluck(:name)
-    stats = unique_tags.map { |tag| { name: tag , count: Tag.where(name: tag).count } }
+    stats = unique_tags.map { |tag| { name: tag , count: Tag.where(name: tag.downcase).count } }
     stats
   end
 end

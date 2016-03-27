@@ -8,7 +8,7 @@ module API
     # delete 'tags/:type/:identifier', to: 'tags#destroy'
 
     def create
-        @entity = Entity.find_or_create_by(entity_type: tag_params[:entity_type], identifier: tag_params[:entity_identifier])
+        @entity = Entity.find_or_create_by(entity_type: tag_params[:entity_type].downcase, identifier: tag_params[:entity_identifier].downcase)
         if @entity.tags.count > 0
           @entity.destroy_all_tags
         end
@@ -55,7 +55,7 @@ module API
     end
 
     def find_entity
-      unless @entity = Entity.find_by(entity_type: tag_params[:entity_type], identifier: tag_params[:entity_identifier])
+      unless @entity = Entity.find_by(entity_type: tag_params[:entity_type].downcase, identifier: tag_params[:entity_identifier].downcase)
         record_not_found
       end
     end
